@@ -5,14 +5,12 @@
 // In renderer process (web page).
 const {ipcRenderer} = require('electron')
 
-
 document.getElementById("timeleft").textContent = ipcRenderer.sendSync('timeleft');
 
 let configuration = ipcRenderer.sendSync('configuration-sync');
 
 //Bind UI with configuration
 for (let key in configuration) {
-  console.log(document.getElementById(key + "_range"));
   let value = configuration[key];
   if (key != "num_pomodoros") value = Math.floor(configuration[key]/60);
   document.getElementById(key + "_range").value = value;
@@ -26,12 +24,19 @@ for (let key in configuration) {
   document.getElementById(key + "_range").oninput = document.getElementById(key + "_range").onchange;
 }
 
+function updateTime() {
+  document.getElementById("timeleft").textContent = ipcRenderer.sendSync('timeleft');
+}
+updateTime();
+
+setInterval(updateTime, 1000);
+
 //Handle time updates
 ipcRenderer.on('timeleft-async-reply', (event, arg) => {
   document.getElementById("timeleft").textContent = arg;
 });
 
-ipcRenderer.send('timeleft-async'); //Register for time updates
+//ipcRenderer.send('timeleft-async'); //Register for time updates
 
 
 //Apply configuration
