@@ -16,9 +16,9 @@ class Configuration {
 
         //Set defaults
         this.config = {
-            pomodoro_duration: 50*60,   //Seconds
-            short_break_duration: 5*60, //Seconds
-            long_break_duration: 15*50, //Seconds
+            pomodoro_duration: 50 * 60,   //Seconds
+            short_break_duration: 5 * 60, //Seconds
+            long_break_duration: 15 * 50, //Seconds
             num_pomodoros: 3
         };
 
@@ -27,12 +27,11 @@ class Configuration {
     load() {
         let parent = this;
         if (fs.existsSync(this.CONFIG_PATH)) {
-            fs.readFile(this.CONFIG_PATH, function (error, data) {
-                data = JSON.parse(data);
-                for (let key in data) { //Replace only keys that are present
-                    parent.config[key] = data[key];
-                }
-            });
+            let data = fs.readFileSync(this.CONFIG_PATH);
+            data = JSON.parse(data);
+            for (let key in data) { //Replace only keys that are present
+                parent.config[key] = data[key];
+            }
         }
     }
 
