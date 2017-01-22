@@ -1,40 +1,16 @@
 # Pomotron
 
-**Clone and run for a quick way to see Electron in action.**
+Pomotron is a timer for using the [Pomodor Technique](https://en.wikipedia.org/wiki/Pomodoro_Technique) on Windows, Mac OS X and Linux.
+It is implemented using [Electron](http://electron.atom.io/).
 
-This is a minimal Electron application based on the [Quick Start Guide](http://electron.atom.io/docs/tutorial/quick-start) within the Electron documentation.
+## Running Pomotron
 
-**Use this app along with the [Electron API Demos](http://electron.atom.io/#get-started) app for API code examples to help you get started.**
+### Install dependencies
 
-A basic Electron application needs just these files:
+Execute `npm install`.
 
-- `package.json` - Points to the app's main file and lists its details and dependencies.
-- `main.js` - Starts the app and creates a browser window to render HTML. This is the app's **main process**.
-- `index.html` - A web page to render. This is the app's **renderer process**.
+### Run the code
 
-You can learn more about each of these components within the [Quick Start Guide](http://electron.atom.io/docs/tutorial/quick-start).
+Execute `npm start`.
 
-## To Use
-
-To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
-
-```bash
-# Clone this repository
-git clone https://github.com/electron/Pomotron
-# Go into the repository
-cd Pomotron
-# Install dependencies
-npm install
-# Run the app
-npm start
-```
-
-Learn more about Electron and its API in the [documentation](http://electron.atom.io/docs/).
-
-## Other Example Apps
-
-For more example apps, see the
-[list of boilerplates](http://electron.atom.io/community/#boilerplates)
-created by the awesome electron community.
-
-#### License [CC0 1.0 (Public Domain)](LICENSE.md)
+#### License [Apache 2.0](LICENSE).

@@ -39,9 +39,10 @@ let state = {
   paused: false,
   pomodorosDone: 0,
   status: STATUS_WORKING,
-  left: 0,                    //Time left in milliseconds
+  time_left: 0,                    //Time left in milliseconds
   status_changed: 0,          //Time in milliseconds when the last status change was performed
-  timeout: null
+  timeout: null,
+  ends_at: 0                   //Time in which the time will change the state
 };
 
 //Get time
@@ -56,17 +57,24 @@ let forceQuit = false;
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 800, height: 600 })
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    icon: path.join(__dirname, 'images', 'icon-red.png')
+  });
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
-  }))
+  }));
+
+  //Remove menu
+  mainWindow.setMenu(null);
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('close', function (event) {
@@ -127,23 +135,13 @@ app.on('ready', () => {
   //createWindow();
 })
 
-function to2DigitsInt(n) {
-  n = Math.floor(n);
-  if (n < 10) return "0" + n;
-  return n;
-}
-
-function formatTime(milliseconds) {
-  seconds = Math.floor(milliseconds/1000);
-  let hours = to2DigitsInt(seconds / 3600);
-  seconds = to2DigitsInt(seconds % 3600);
-  let minutes = to2DigitsInt(seconds / 60);
-  seconds = to2DigitsInt(seconds % 60);
-  return hours + ":" + minutes + ":" + seconds;
-}
-
-ipcMain.on('timeleft', function (event, data) {
-  event.returnValue = formatTime(state.time_left - (getTime() - state.status_changed));
+ipcMain.on('state', function (event, data) {
+  event.returnValue = {
+    time_left: state.time_left,
+    ends_at: state.ends_at,
+    status_changed: state.status_changed,
+    paused: state.paused
+  };
 });
 
 ipcMain.on('configuration-sync', function (event, data) {
@@ -158,11 +156,11 @@ ipcMain.on('timeleft-async', function (event, data) {
 });
 
 ipcMain.on('apply-config-async', function (event, data) {
-  console.log(data);
   for (let key in data) {
     config.set(key, data[key]);
   }
   config.save();
+  initStates();
 });
 
 function toggleInterval() {
@@ -181,8 +179,7 @@ function toggleInterval() {
 }
 
 function startTimeout() {
-  console.log("startTimeout");
-  state.status_changed = getTime();  
+  state.status_changed = getTime();
   if (state.timeout == null) {
     state.timeout = setTimeout(timerEnded, state.time_left);
     state.paused = false;
@@ -200,6 +197,7 @@ function createNotification(notificationCode) {
 
 function startPomodoro() {
   state.time_left = config.get("pomodoro_duration") * 1000;
+  state.ends_at += state.time_left;
   state.status = STATUS_WORKING;
   startTimeout();
   createNotification(NOTIFY_NEW_POMODORO);
@@ -207,6 +205,7 @@ function startPomodoro() {
 
 function startShortBreak() {
   state.time_left = config.get("short_break_duration") * 1000;
+  state.ends_at += state.time_left;
   state.status = STATUS_SHORT_BREAK;
   startTimeout();
   createNotification(NOTIFY_SHORT_BREAK);
@@ -214,9 +213,19 @@ function startShortBreak() {
 
 function startLongBreak() {
   state.time_left = config.get("long_break_duration") * 1000;
+  state.ends_at += state.time_left;
   state.status = STATUS_LONG_BREAK;
   startTimeout();
   createNotification(NOTIFY_LONG_BREAK);
+}
+
+function initStates() {
+  state.paused = false;
+  state.pomodorosDone = 0;
+  state.status = STATUS_WORKING;
+  state.ends_at = 0;
+  clearTimeout(state.timeout);
+  startPomodoro();
 }
 
 function timerEnded() {
@@ -232,10 +241,9 @@ function timerEnded() {
       startPomodoro();
       break;
     case STATUS_LONG_BREAK:
-      state.pomodorosDone = 0;
-      startPomodoro();
+      initStates();
       break;
   }
 }
 
-startPomodoro();
+initStates();

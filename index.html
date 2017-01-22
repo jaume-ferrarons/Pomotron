@@ -12,7 +12,16 @@
 </head>
 
 <body>
-  <h1 id="timeleft"></h1>
+  <div class="jumbotron">
+    <div class="container">
+      <h1 id="timeleft"></h1>
+    </div>
+  </div>
+  <div id="timeline" class="progress" style="position: relative;">
+    <span id="timelineMarker" style="position:absolute;left:50%;top:0px;transform: translateX(-50%) translateY(-30%);">
+      <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+    </span>
+  </div>
   <form>
     <label>Pomodoro duration:</label> <span id="pomodoro_duration_value"></span> minutes
     <input id="pomodoro_duration_range" type="range" data-show-value="true" min="0" max="120">
@@ -20,12 +29,12 @@
     <input id="short_break_duration_range" type="range" data-show-value="true" min="0" max="120">
     <label>Long break duration:</label> <span id="long_break_duration_value"></span> minutes
     <input id="long_break_duration_range" type="range" data-show-value="true" min="0" max="120">
-    <label>Number of pomodoros:</label> <span id="num_pomodoros_value"></span> minutes
+    <label>Number of pomodoros:</label> <span id="num_pomodoros_value"></span>
     <input id="num_pomodoros_range" type="range" data-show-value="true" min="0" max="100">
   </form>
   <button id="apply_btn">Apply</button>
 </body>
-
+<script>window.$ = window.jQuery = require('./bower_components/jquery/dist/jquery.min.js');</script>
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script>
   // You can also require other files to run in this process
