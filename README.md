@@ -18,6 +18,7 @@ Execute `npm start`.
 - Customize `working`/`short break`/`long break` durations.
 - Visualize the time distribution easily.
 - Know at any moment where are you in the current pomodoro.
+- Fullscreen notification at the of the pomodoro so you won't miss any break again.
 
 ![Pomotron screenshot](./documentation/pomotron-screenshot.png)
 

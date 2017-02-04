@@ -1,0 +1,23 @@
+body {
+    background-color: black;
+    color: white;
+    background-image: url('https://source.unsplash.com/category/nature/1920x1080');
+    background-size: cover;
+}
+
+.center-div {
+      position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+
+}
+
+.notification {
+    padding: 15px 45px;
+    background: hsla(0, 5%, 15%, 0.9);
+    border-radius: 10px;
+    box-shadow: 5px 3px 30px black;
+    text-align: center;
+}

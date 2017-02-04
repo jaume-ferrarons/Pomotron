@@ -42,7 +42,8 @@ let state = {
   time_left: 0,                    //Time left in milliseconds
   status_changed: 0,          //Time in milliseconds when the last status change was performed
   timeout: null,
-  ends_at: 0                   //Time in which the time will change the state
+  ends_at: 0,                   //Time in which the time will change the state
+  fullscreen_eop: true
 };
 
 //Get time
@@ -53,6 +54,7 @@ function getTime() {
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow = null;
+let eopWindow = null;
 let forceQuit = false;
 
 function createWindow() {
@@ -65,13 +67,14 @@ function createWindow() {
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
+    pathname: path.join(__dirname, 'windows/configuration/index.html'),
     protocol: 'file:',
     slashes: true
   }));
 
   //Remove menu
   mainWindow.setMenu(null);
+  mainWindow.focus(); //Bring to the front
 
   // Open the DevTools.
   //mainWindow.webContents.openDevTools();
@@ -84,6 +87,36 @@ function createWindow() {
     mainWindow = null;
     async_receiver = null;
   })
+}
+
+//Creates a full screen notification window for the end of the pomodoro
+function createEOPwindow() {
+  //Create the window
+  eopWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    icon: path.join(__dirname, 'images', 'icon-red.png'),
+    fullscreen: true,
+  });
+
+  // and load the index.html of the app.
+  eopWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'windows/endofpomodoro/index.html'),
+    protocol: 'file:',
+    slashes: true,
+  }));
+
+  //Remove menu
+  eopWindow.setMenu(null);
+  //Set always to the front
+  eopWindow.setAlwaysOnTop(true);
+  eopWindow.focus();
+  ///eopWindow.webContents.openDevTools();
+
+  //Handle to close event to know when closed
+  eopWindow.on('close', function (event) {
+    eopWindow = null; //Remove the pointer to the window
+  });
 }
 
 // This method will be called when Electron has finished
@@ -123,6 +156,7 @@ app.on('ready', () => {
   tray = new Tray('./images/icon-red.png');
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Paused', type: 'checkbox', checked: false, click() { toggleInterval() } },
+    { label: 'Fullscreen break', type: 'checkbox', checked: state.fullscreen_eop, click() { state.fullscreen_eop = !state.fullscreen_eop } },
     { label: 'Exit', click() { forceQuit = true; app.quit(); } },
   ]);
   tray.setToolTip('This is my application.')
@@ -200,6 +234,7 @@ function startPomodoro() {
   state.ends_at += state.time_left;
   state.status = STATUS_WORKING;
   startTimeout();
+  if (eopWindow != null) eopWindow.close(); //Close EOP window if open
   createNotification(NOTIFY_NEW_POMODORO);
 }
 
@@ -209,6 +244,7 @@ function startShortBreak() {
   state.status = STATUS_SHORT_BREAK;
   startTimeout();
   createNotification(NOTIFY_SHORT_BREAK);
+  if (state.fullscreen_eop) createEOPwindow();
 }
 
 function startLongBreak() {
@@ -217,6 +253,7 @@ function startLongBreak() {
   state.status = STATUS_LONG_BREAK;
   startTimeout();
   createNotification(NOTIFY_LONG_BREAK);
+  if (state.fullscreen_eop) createEOPwindow();
 }
 
 function initStates() {
