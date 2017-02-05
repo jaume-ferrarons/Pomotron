@@ -26,7 +26,7 @@ function formatTime(milliseconds) {
 }
 
 //Bind UI with configuration
-for (let key in edited_configuration) {
+for (let key of ["pomodoro_duration", "short_break_duration", "long_break_duration", "num_pomodoros"]) {
   let value = edited_configuration[key];
   if (key != "num_pomodoros") value = Math.floor(edited_configuration[key] / 60);
   document.getElementById(key + "_range").value = value;
@@ -40,6 +40,14 @@ for (let key in edited_configuration) {
   document.getElementById(key + "_range").oninput = document.getElementById(key + "_range").onchange;
 }
 
+//Set start on boot checkbox
+$("#chk_start_on_boot").
+  prop('checked', edited_configuration["start_on_boot"]).
+  change(function () {
+    edited_configuration["start_on_boot"] = $(this).is(':checked')
+  });
+
+
 //Updated the timer state
 function updateTime() {
   //Fetch the state from the main class
@@ -50,7 +58,7 @@ function updateTime() {
 
   document.getElementById("timeleft").textContent = formatTime(left);
   //Update marker positions
-  setMarker((state.ends_at - left)/1000);
+  setMarker((state.ends_at - left) / 1000);
 }
 updateTime();
 

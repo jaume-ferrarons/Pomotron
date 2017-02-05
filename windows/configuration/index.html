@@ -31,14 +31,22 @@
     <input id="long_break_duration_range" type="range" data-show-value="true" min="1" max="120">
     <label>Number of pomodoros:</label> <span id="num_pomodoros_value"></span>
     <input id="num_pomodoros_range" type="range" data-show-value="true" min="0" max="100">
+    <div class="checkbox">
+      <label>
+        <input id="chk_start_on_boot" type="checkbox"> Start on boot
+      </label>
+    </div>
   </form>
   <button id="apply_btn">Apply</button>
 </body>
-<script>window.$ = window.jQuery = require('../../bower_components/jquery/dist/jquery.min.js');</script>
+<script>
+  window.$ = window.jQuery = require('../../bower_components/jquery/dist/jquery.min.js');
+</script>
 <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
 <script>
   // You can also require other files to run in this process
-  require('./renderer.js')
+  require('./renderer.js');
+
 </script>
 
 </html>
