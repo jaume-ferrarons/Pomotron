@@ -19,6 +19,7 @@ Execute `npm start`.
 - Visualize the time distribution easily.
 - Know at any moment where are you in the current pomodoro.
 - Fullscreen notification at the of the pomodoro so you won't miss any break again.
+- Autostart when usre logs in.
 
 ![Pomotron screenshot](./documentation/pomotron-screenshot.png)
 

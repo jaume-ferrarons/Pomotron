@@ -57,12 +57,16 @@ let mainWindow = null;
 let eopWindow = null;
 let forceQuit = false;
 
+let assets = {
+  icon: path.join(__dirname, '..', 'assets', 'icons', 'icon-red.png')
+}
+
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    icon: path.join(__dirname, 'images', 'icon-red.png')
+    icon: assets.icon
   });
 
   // and load the index.html of the app.
@@ -95,7 +99,7 @@ function createEOPwindow() {
   eopWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    icon: path.join(__dirname, 'images', 'icon-red.png'),
+    icon: assets.icon,
     fullscreen: true,
   });
 
@@ -153,7 +157,7 @@ app.on('will-quit', function (event) {
 
 let tray = null
 app.on('ready', () => {
-  tray = new Tray('./images/icon-red.png');
+  tray = new Tray(assets.icon);
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Paused', type: 'checkbox', checked: false, click() { toggleInterval() } },
     { label: 'Fullscreen break', type: 'checkbox', checked: state.fullscreen_eop, click() { state.fullscreen_eop = !state.fullscreen_eop } },
@@ -224,7 +228,7 @@ function createNotification(notificationCode) {
   notifier.notify({
     title: 'Pomotron',
     message: lang[notificationCode],
-    icon: path.join(__dirname, 'images', 'icon-red.png')
+    icon: assets.icon
   });
 }
 

@@ -2,3 +2,5 @@ node_modules
 bower_components
 *.sh
 npm-debug.log.*
+release-builds
+*.log
