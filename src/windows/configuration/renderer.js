@@ -80,7 +80,7 @@ function initProgressBars() {
   let num_pomodoros = configuration['num_pomodoros'];
 
   //Compute the total time
-  let totalTime = (pomodoro_duration + short_break_duration) * num_pomodoros + long_break_duration;
+  let totalTime = (pomodoro_duration + short_break_duration) * num_pomodoros - short_break_duration + long_break_duration;
 
   let timeline = $("#timeline");
 
@@ -90,7 +90,7 @@ function initProgressBars() {
   //Create new bars
   for (let i = 0; i < num_pomodoros; i++) {
     timeline.append(createProgressBar(true, pomodoro_duration / totalTime * 100));
-    timeline.append(createProgressBar(false, short_break_duration / totalTime * 100));
+    if (i < num_pomodoros - 1) timeline.append(createProgressBar(false, short_break_duration / totalTime * 100));
   }
   timeline.append(createProgressBar(false, long_break_duration / totalTime * 100));
 }
