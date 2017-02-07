@@ -19,7 +19,7 @@ class Configuration {
         this.config = {
             pomodoro_duration: 50 * 60,   //Seconds
             short_break_duration: 5 * 60, //Seconds
-            long_break_duration: 15 * 50, //Seconds
+            long_break_duration: 15 * 60, //Seconds
             num_pomodoros: 3,
             start_on_boot: true
         };

@@ -1,4 +1,4 @@
-![Pomotron Logo](./images/icon-red.png)
+![Pomotron Logo](./assets/icons/icon-red.png)
 # Pomotron
 Pomotron is a timer for using the [Pomodor Technique](https://en.wikipedia.org/wiki/Pomodoro_Technique) on Windows, Mac OS X and Linux.
 It is implemented using [Electron](http://electron.atom.io/).
@@ -13,6 +13,13 @@ Execute `npm install`.
 
 Execute `npm start`.
 
+### Packaging
+ 
+Pomotron is multiplatform. The distributable platform specific packages can be generated using the following commands:
+- For **Windows** run: `npm run package-win`
+- For **Linux** run: `npm run package-linux`
+- For **Mac**  run: `npm run package-mac`
+
 ## Features
 
 - Customize `working`/`short break`/`long break` durations.
@@ -21,6 +28,7 @@ Execute `npm start`.
 - Fullscreen notification at the of the pomodoro so you won't miss any break again.
 - Autostart when usre logs in.
 
+### Screenshots
 ![Pomotron screenshot](./documentation/pomotron-screenshot.png)
 
 ## Why Pomotron?
