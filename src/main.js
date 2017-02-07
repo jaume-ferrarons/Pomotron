@@ -266,6 +266,7 @@ function initStates() {
   state.status = STATUS_WORKING;
   state.ends_at = 0;
   clearTimeout(state.timeout);
+  state.timeout = null;
   startPomodoro();
 }
 
